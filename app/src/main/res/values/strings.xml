@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">DetectVoice</string>
+    <string name="lable_bluetooth">Tap to connect a devices</string>
+    <string name="lable_speech_voice">Tap to say something...</string>
+    <string name="cancel">Cancel</string>
+    <string name="speech_prompt">Say something…</string>
+    <string name="speech_not_supported">Sorry! Your device doesn\\\'t support speech input</string>
+    <string name="state_off">OFF</string>
+    <string name="state_on">ON</string>
+</resources>

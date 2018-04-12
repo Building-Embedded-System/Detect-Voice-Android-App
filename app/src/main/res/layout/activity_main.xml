@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="@color/white">
+
+    <ImageButton
+        android:id="@+id/imgBluetooth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/bluetooth_icon"
+        android:background="@color/white"
+        android:layout_marginTop="@dimen/margin_top"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+    <TextView
+        android:id="@+id/lbBluetooth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/lable_bluetooth"
+        android:textAlignment="center"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/imgBluetooth"/>
+
+    <ImageButton
+        android:id="@+id/imgSpeechVoice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/microphone_hot_icon"
+        android:background="@color/white"
+        android:layout_marginTop="@dimen/margin_top"
+        app:layout_constraintTop_toBottomOf="@+id/lbBluetooth"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+    <TextView
+        android:id="@+id/lbSpeechVoice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/lable_speech_voice"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@id/imgSpeechVoice"/>
+
+    <ImageView
+        android:id="@+id/imgLed"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/white_led_off_md"
+        android:layout_marginTop="@dimen/margin_top"
+        app:layout_constraintTop_toBottomOf="@id/lbSpeechVoice"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/txtLedState"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/state_off"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@id/imgLed"/>
+
+    <TextView
+        android:id="@+id/txtResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_top"
+        app:layout_constraintTop_toBottomOf="@id/txtLedState"/>
+</android.support.constraint.ConstraintLayout>
