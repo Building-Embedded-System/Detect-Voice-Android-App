@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
+            Log.e("TAG", action);
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 // Discovery has found a device. Get the BluetoothDevice
                 // object and its info from the Intent.
@@ -252,7 +253,6 @@ public class MainActivity extends AppCompatActivity {
                     else if(dataVoiceInput.toLowerCase().contains("off") || dataVoiceInput.toLowerCase().contains("tắt")){
                         str = "off";
                     }
-
                     mMyService.write(str.getBytes());
                 }
                 break;

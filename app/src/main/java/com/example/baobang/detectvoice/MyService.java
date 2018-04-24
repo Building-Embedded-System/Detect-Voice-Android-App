@@ -110,7 +110,8 @@ public class MyService {
         Message msg = mHandler.obtainMessage(MyState.MESSAGE_DEVICE_OBJECT);
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.DEVICE_OBJECT, device);
-        msg.setData(bundle);
+        msg.setData(bundle)
+        ;
         mHandler.sendMessage(msg);
 
         setState(MyState.CONNECTED);
@@ -262,7 +263,6 @@ public class MyService {
             // Start the connected thread
             connected(mmBluetoothSocket, mBluetoothDevice);
         }
-
         public void cancel() {
             try {
                 mmBluetoothSocket.close();
