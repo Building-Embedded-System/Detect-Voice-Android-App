@@ -32,7 +32,6 @@ public class MyService {
     // Set the current mState of the chat connection
     private synchronized void setState(int state) {
         this.mState = state;
-
         mHandler.obtainMessage(MyState.MESSAGE_STATE_CHANGE, state, -1).sendToTarget();
     }
 
@@ -244,27 +243,22 @@ public class MyService {
 
         public void run() {
             setName("ConnectThread");
-
             // Always cancel discovery because it will slow down a connection
             mBluetoothAdapter.cancelDiscovery();
-
             // Make a connection to the BluetoothSocket
             try {
                 mmBluetoothSocket.connect();
             } catch (IOException e) {
                 try {
                     mmBluetoothSocket.close();
-                } catch (IOException e2) {
-                }
+                } catch (IOException e2) {}
                 connectionFailed();
                 return;
             }
-
             // Reset the ConnectThread because we're done
             synchronized (MyService.this) {
                 mConnectThread = null;
             }
-
             // Start the connected thread
             connected(mmBluetoothSocket, mBluetoothDevice);
         }
@@ -272,8 +266,7 @@ public class MyService {
         public void cancel() {
             try {
                 mmBluetoothSocket.close();
-            } catch (IOException e) {
-            }
+            } catch (IOException e) {}
         }
     }
 
@@ -301,7 +294,6 @@ public class MyService {
         public void run() {
             byte[] buffer = new byte[1];
             int bytes;
-
             // Keep listening to the InputStream
             while (true) {
                 try {
@@ -313,7 +305,6 @@ public class MyService {
                         mHandler.obtainMessage(MyState.MESSAGE_READ, bytes, -1,
                                 buffer).sendToTarget();
                     }
-
                 } catch (IOException e) {
                     connectionLost();
                     // Start the service over to restart listening mode
@@ -327,10 +318,9 @@ public class MyService {
         public void write(byte[] buffer) {
             try {
                 mmOutputStream.write(buffer);
-                mHandler.obtainMessage(MyState.MESSAGE_WRITE, -1, -1,
-                        buffer).sendToTarget();
-            } catch (IOException e) {
-            }
+                mHandler.obtainMessage(MyState.MESSAGE_WRITE, -1, -1, buffer)
+                        .sendToTarget();
+            } catch (IOException e) {}
         }
 
         public void cancel() {

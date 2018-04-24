@@ -8,4 +8,7 @@ public interface Constants {
      static final String APP_NAME = "DetectVoice";
      static final String DEVICE_OBJECT = "device_name";
      static final int REQ_CODE_SPEECH_INPUT = 100;
+     static final int SETTING_CODE = 10;
+
+
 }

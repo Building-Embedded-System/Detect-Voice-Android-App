@@ -20,6 +20,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -65,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<BluetoothDevice> mDevices;
     private BluetoothDevice mConnectingDevice;
     private MyService mMyService;
+
+
     // Create a BroadcastReceiver for ACTION_FOUND.
     IntentFilter mFilter;
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -74,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 // Discovery has found a device. Get the BluetoothDevice
                 // object and its info from the Intent.
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                Log.e("TAG", "onReceive: " + device.getName());
                 mDevices.add(device);
                 mDeviceAdapter.notifyDataSetChanged();
             }
@@ -88,8 +92,10 @@ public class MainActivity extends AppCompatActivity {
         checkSupporBluetooth();
         checkEnableBluetooth();
         addControls();
+
         mFilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         mFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+        mDevices.clear();
         registerReceiver(mReceiver, mFilter);
     }
 
@@ -103,7 +109,10 @@ public class MainActivity extends AppCompatActivity {
     void onClick(View view){
         switch (view.getId()){
             case R.id.imgBluetooth:
-                showDialogDevice();
+                //Switch to Setting Bluetooth
+                Intent settingsIntent = new Intent(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS);
+                startActivityForResult(settingsIntent, Constants.SETTING_CODE);
+//                showDialogDevice();
                 break;
             case R.id.imgSpeechVoice:
                 showSpeechVoiceDialog();
@@ -112,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showSpeechVoiceDialog() {
-
         if(mConnectingDevice == null){
             Toast.makeText(this, "Need to connect a device...", Toast.LENGTH_SHORT).show();
             return;
@@ -131,6 +139,8 @@ public class MainActivity extends AppCompatActivity {
                     getString(R.string.speech_not_supported),
                     Toast.LENGTH_SHORT).show();
         }
+
+
     }
 
     private void showDialogDevice() {
@@ -143,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         mBluetoothAdapter.startDiscovery();
-
         final ArrayList<BluetoothDevice> pairedDevices = new ArrayList<>();
         DeviceAdapter pairedDeviceAdapter = new DeviceAdapter(this, pairedDevices);
 
@@ -157,14 +166,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Register for broadcasts when discovery has finished
-
-
         Set<BluetoothDevice> pairedDeviceSet = mBluetoothAdapter.getBondedDevices();
         if(pairedDeviceSet.size() > 0){
             pairedDevices.addAll(pairedDeviceSet);
             pairedDeviceAdapter.notifyDataSetChanged();
         }
-
         pairedDeviceAdapter.setOnItemClickListener(new DeviceAdapter.OnItemClickListener() {
             @Override
             public void onClick(int position) {
@@ -173,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
                 mDialog.dismiss();
             }
         });
+
         mDeviceAdapter.setOnItemClickListener(new DeviceAdapter.OnItemClickListener() {
             @Override
             public void onClick(int position) {
@@ -238,9 +245,22 @@ public class MainActivity extends AppCompatActivity {
                             .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     String dataVoiceInput = result.get(0);
                     txtResult.setText(dataVoiceInput);
-                    mMyService.write(dataVoiceInput.getBytes());
+                    String str = "";
+                    if(dataVoiceInput.toLowerCase().contains("on") || dataVoiceInput.toLowerCase().contains("bật")){
+                        str = "on";
+                    }
+                    else if(dataVoiceInput.toLowerCase().contains("off") || dataVoiceInput.toLowerCase().contains("tắt")){
+                        str = "off";
+                    }
+
+                    mMyService.write(str.getBytes());
                 }
                 break;
+
+            case 10:
+            {
+                showDialogDevice();
+            }
         }
     }
 
@@ -255,7 +275,6 @@ public class MainActivity extends AppCompatActivity {
     private Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
-
             switch (msg.what) {
                 case MyState.MESSAGE_STATE_CHANGE:
                     switch (msg.arg1) {
