@@ -20,6 +20,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
+            Log.e("TAG", action);
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 // Discovery has found a device. Get the BluetoothDevice
                 // object and its info from the Intent.
@@ -238,6 +240,12 @@ public class MainActivity extends AppCompatActivity {
                             .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     String dataVoiceInput = result.get(0);
                     txtResult.setText(dataVoiceInput);
+                    String str;
+                    if(dataVoiceInput.toLowerCase().contains("bật") || dataVoiceInput.toLowerCase().contains("on")){
+                        dataVoiceInput = "on";
+                    }else if(dataVoiceInput.toLowerCase().contains("tắt") || dataVoiceInput.toLowerCase().contains("off")){
+                        dataVoiceInput = "off";
+                    }
                     mMyService.write(dataVoiceInput.getBytes());
                 }
                 break;

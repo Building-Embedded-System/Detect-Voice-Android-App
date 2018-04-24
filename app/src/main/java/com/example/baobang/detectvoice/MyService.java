@@ -111,7 +111,8 @@ public class MyService {
         Message msg = mHandler.obtainMessage(MyState.MESSAGE_DEVICE_OBJECT);
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.DEVICE_OBJECT, device);
-        msg.setData(bundle);
+        msg.setData(bundle)
+        ;
         mHandler.sendMessage(msg);
 
         setState(MyState.CONNECTED);
@@ -244,10 +245,8 @@ public class MyService {
 
         public void run() {
             setName("ConnectThread");
-
             // Always cancel discovery because it will slow down a connection
             mBluetoothAdapter.cancelDiscovery();
-
             // Make a connection to the BluetoothSocket
             try {
                 mmBluetoothSocket.connect();
@@ -259,16 +258,13 @@ public class MyService {
                 connectionFailed();
                 return;
             }
-
             // Reset the ConnectThread because we're done
             synchronized (MyService.this) {
                 mConnectThread = null;
             }
-
             // Start the connected thread
             connected(mmBluetoothSocket, mBluetoothDevice);
         }
-
         public void cancel() {
             try {
                 mmBluetoothSocket.close();
